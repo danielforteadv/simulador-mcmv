@@ -185,7 +185,7 @@ export default function App() {
         position: "sticky", top: 0, zIndex: 50,
         boxShadow: "0 1px 3px rgba(0,0,0,0.06)"
       }}>
-        <div className="mobile-px-16" style={{ padding: "0 24px", maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 64 }}>
+        <div className="mobile-px-16 mobile-flex-wrap mobile-header-stack" style={{ padding: "0 24px", maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 64 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <div style={{
               width: 36, height: 36, borderRadius: 10, background: "linear-gradient(135deg, #1d4ed8, #7c3aed)",
