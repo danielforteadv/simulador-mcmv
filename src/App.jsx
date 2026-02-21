@@ -216,7 +216,7 @@ export default function App() {
 
       {/* Tab Nav */}
       <div style={{ background: "#fff", borderBottom: "1px solid #E5E7EB" }}>
-        <div className="no-scrollbar mobile-px-16 mobile-scroll-container" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", display: "flex", gap: 0, overflowX: "auto" }}>
+        <div className="mobile-px-16 mobile-flex-wrap" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", display: "flex", gap: 0, justifyContent: "space-between" }}>
           {tabs.map(t => {
             const Icon = t.icon;
             const active = tab === t.id;
@@ -226,13 +226,13 @@ export default function App() {
                 className="tab-button"
                 onClick={() => setTab(t.id)}
                 style={{
-                  display: "flex", alignItems: "center", gap: 7, padding: "12px 18px",
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: 7, padding: "12px 10px",
                   borderBottom: active ? "2px solid #1d4ed8" : "2px solid transparent",
                   color: active ? "#1d4ed8" : "#6B7280",
                   fontWeight: active ? 600 : 500, fontSize: 13,
                   background: "none", border: "none", borderRadius: 0,
                   cursor: "pointer", transition: "all 0.15s", marginBottom: -1,
-                  whiteSpace: "nowrap", flexShrink: 0
+                  whiteSpace: "nowrap", flexGrow: 1, textAlign: "center"
                 }}
               >
                 <Icon size={15} />
