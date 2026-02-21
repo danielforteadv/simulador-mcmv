@@ -178,14 +178,14 @@ export default function App() {
   ];
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F9FAFB", fontFamily: "'DM Sans', 'Outfit', system-ui, sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "#F9FAFB", fontFamily: "'DM Sans', 'Outfit', system-ui, sans-serif", overflowX: "hidden", width: "100vw", maxWidth: "100%" }}>
       {/* Header */}
       <header style={{
         background: "#fff", borderBottom: "1px solid #E5E7EB",
-        padding: "0 24px", position: "sticky", top: 0, zIndex: 50,
+        position: "sticky", top: 0, zIndex: 50,
         boxShadow: "0 1px 3px rgba(0,0,0,0.06)"
       }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 64 }}>
+        <div className="mobile-px-16" style={{ padding: "0 24px", maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 64 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <div style={{
               width: 36, height: 36, borderRadius: 10, background: "linear-gradient(135deg, #1d4ed8, #7c3aed)",
@@ -202,7 +202,7 @@ export default function App() {
               </div>
             </div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <div className="mobile-hide" style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <span style={{
               fontSize: 11, fontWeight: 600, padding: "4px 10px", borderRadius: 20,
               background: "#EFF6FF", color: "#1d4ed8", border: "1px solid #BFDBFE"
@@ -216,7 +216,7 @@ export default function App() {
 
       {/* Tab Nav */}
       <div style={{ background: "#fff", borderBottom: "1px solid #E5E7EB" }}>
-        <div className="no-scrollbar" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", display: "flex", gap: 0, overflowX: "auto" }}>
+        <div className="no-scrollbar mobile-px-16" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", display: "flex", gap: 0, overflowX: "auto" }}>
           {tabs.map(t => {
             const Icon = t.icon;
             const active = tab === t.id;
@@ -242,7 +242,7 @@ export default function App() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "28px 24px" }}>
+      <div className="mobile-p-16" style={{ maxWidth: 1280, margin: "0 auto", padding: "28px 24px" }}>
 
         {/* ─────────────── DASHBOARD ─────────────── */}
         {tab === "dashboard" && (
