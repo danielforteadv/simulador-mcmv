@@ -216,7 +216,7 @@ export default function App() {
 
       {/* Tab Nav */}
       <div style={{ background: "#fff", borderBottom: "1px solid #E5E7EB" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", display: "flex", gap: 0 }}>
+        <div className="no-scrollbar" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", display: "flex", gap: 0, overflowX: "auto" }}>
           {tabs.map(t => {
             const Icon = t.icon;
             const active = tab === t.id;
@@ -231,6 +231,7 @@ export default function App() {
                   fontWeight: active ? 600 : 500, fontSize: 13,
                   background: "none", border: "none", borderRadius: 0,
                   cursor: "pointer", transition: "all 0.15s", marginBottom: -1,
+                  whiteSpace: "nowrap", flexShrink: 0
                 }}
               >
                 <Icon size={15} />
@@ -466,7 +467,7 @@ export default function App() {
                 </div>
                 {CONSTRUCTION_ITEMS.map((item, i) => {
                   const value = calc.subtotalConstrucao * item.pct;
-                  const colors = ["#3B82F6","#8B5CF6","#10B981","#F59E0B","#EF4444","#06B6D4","#84CC16","#F97316","#EC4899","#6366F1","#14B8A6"];
+                  const colors = ["#3B82F6", "#8B5CF6", "#10B981", "#F59E0B", "#EF4444", "#06B6D4", "#84CC16", "#F97316", "#EC4899", "#6366F1", "#14B8A6"];
                   return (
                     <div key={i} style={{ marginBottom: 10 }}>
                       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
