@@ -30,3 +30,23 @@ html {
   scrollbar-width: none;
   /* Firefox */
 }
+
+/* Mobile responsive utilities */
+@media (max-width: 768px) {
+  .mobile-hide {
+    display: none !important;
+  }
+
+  .mobile-p-16 {
+    padding: 16px !important;
+  }
+
+  .mobile-px-16 {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .mobile-mb-16 {
+    margin-bottom: 16px !important;
+  }
+}
