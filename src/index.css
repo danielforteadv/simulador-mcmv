@@ -60,4 +60,15 @@ html {
     padding-bottom: 12px !important;
     gap: 12px !important;
   }
+
+  /* Fix for tab navigation scrolling on mobile */
+  .mobile-scroll-container {
+    padding-right: 24px !important;
+  }
+}
+
+/* Ensure letters inside tabs do not "dance" or wrap */
+.tab-button {
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
 }

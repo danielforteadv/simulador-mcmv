@@ -216,13 +216,14 @@ export default function App() {
 
       {/* Tab Nav */}
       <div style={{ background: "#fff", borderBottom: "1px solid #E5E7EB" }}>
-        <div className="no-scrollbar mobile-px-16" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", display: "flex", gap: 0, overflowX: "auto" }}>
+        <div className="no-scrollbar mobile-px-16 mobile-scroll-container" style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", display: "flex", gap: 0, overflowX: "auto" }}>
           {tabs.map(t => {
             const Icon = t.icon;
             const active = tab === t.id;
             return (
               <button
                 key={t.id}
+                className="tab-button"
                 onClick={() => setTab(t.id)}
                 style={{
                   display: "flex", alignItems: "center", gap: 7, padding: "12px 18px",
