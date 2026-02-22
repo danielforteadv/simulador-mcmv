@@ -35,6 +35,7 @@ const CONSTRUCTION_ITEMS = [
 ];
 
 export default function App() {
+  const [tab, setTab] = useState("dashboard");
   const [params, setParams] = useState({
     blocos: 1,
     pavimentos: 4,
