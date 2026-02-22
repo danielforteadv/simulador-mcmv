@@ -55,11 +55,11 @@ export default function App() {
   const unsavedChanges = JSON.stringify(params) !== lastSavedParamsStr;
 
   useEffect(() => {
-    // Carregar dados salvos no servidor ao iniciar o app
-    fetch('/api/load.php')
+    // Carregar dados salvos no servidor ao iniciar o app, ignorando cache
+    fetch(`/api/load.php?t=${Date.now()}`)
       .then(res => res.json())
       .then(data => {
-        if (data && typeof data === 'object') {
+        if (data && typeof data === 'object' && data.blocos !== undefined) {
           setParams(data);
           setLastSavedParamsStr(JSON.stringify(data));
         }
@@ -209,6 +209,18 @@ export default function App() {
     { id: "fluxo", label: "Fluxo de Caixa", icon: Activity },
     { id: "sensibilidade", label: "Sensibilidade", icon: Layers },
   ];
+
+  if (isLoading) {
+    return (
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#F9FAFB", fontFamily: "'DM Sans', sans-serif" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
+          <div style={{ width: 40, height: 40, border: "3px solid #E5E7EB", borderTopColor: "#1d4ed8", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
+          <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+          <div style={{ color: "#6B7280", fontWeight: 500 }}>Carregando simulação...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ minHeight: "100vh", background: "#F9FAFB", fontFamily: "'DM Sans', 'Outfit', system-ui, sans-serif", overflowX: "hidden", width: "100vw", maxWidth: "100%" }}>
