@@ -35,28 +35,41 @@ const CONSTRUCTION_ITEMS = [
 ];
 
 export default function App() {
-  const [tab, setTab] = useState("dashboard");
-  const [params, setParams] = useState(() => {
-    try {
-      const saved = localStorage.getItem("mcmv-params");
-      if (saved) return JSON.parse(saved);
-    } catch (e) { }
-    return {
-      blocos: 1,
-      pavimentos: 4,
-      unidadesPav: 8,
-      areaPrivativa: 44.075,
-      valorUnidade: 159000,
-      custoM2: 1620,
-      terreno: 480000,
-      custosIndiretos: 17000,
-      prazo: 16,
-      tma: 15,
-    };
+  const [params, setParams] = useState({
+    blocos: 1,
+    pavimentos: 4,
+    unidadesPav: 8,
+    areaPrivativa: 44.075,
+    valorUnidade: 159000,
+    custoM2: 1620,
+    terreno: 480000,
+    custosIndiretos: 17000,
+    prazo: 16,
+    tma: 15,
   });
 
   const [lastSavedParamsStr, setLastSavedParamsStr] = useState(() => JSON.stringify(params));
+  const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   const unsavedChanges = JSON.stringify(params) !== lastSavedParamsStr;
+
+  useEffect(() => {
+    // Carregar dados salvos no servidor ao iniciar o app
+    fetch('/api/load.php')
+      .then(res => res.json())
+      .then(data => {
+        if (data && typeof data === 'object') {
+          setParams(data);
+          setLastSavedParamsStr(JSON.stringify(data));
+        }
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.error("Erro ao carregar do servidor:", err);
+        setIsLoading(false); // Carrega os valores padrão se falhar
+      });
+  }, []);
 
   useEffect(() => {
     const handleBeforeUnload = (e) => {
@@ -233,9 +246,23 @@ export default function App() {
               <span style={{ fontSize: 11, color: "#6B7280" }}>João Pessoa · PB</span>
             </div>
             <button
-              onClick={() => {
-                localStorage.setItem("mcmv-params", JSON.stringify(params));
-                setLastSavedParamsStr(JSON.stringify(params));
+              disabled={isSaving}
+              onClick={async () => {
+                if (!unsavedChanges) return;
+                setIsSaving(true);
+                try {
+                  const res = await fetch('/api/save.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(params)
+                  });
+                  if (!res.ok) throw new Error("Network response was not ok");
+                  setLastSavedParamsStr(JSON.stringify(params));
+                } catch (err) {
+                  alert("Erro de conexão ao tentar salvar os dados no servidor!");
+                  console.error(err);
+                }
+                setIsSaving(false);
               }}
               style={{
                 display: "flex", alignItems: "center", gap: 6,
@@ -243,12 +270,13 @@ export default function App() {
                 color: unsavedChanges ? "#fff" : "#6B7280",
                 padding: "8px 12px", borderRadius: 6,
                 border: "none", fontWeight: 600, fontSize: 13,
-                cursor: "pointer", transition: "all 0.2s"
+                cursor: (unsavedChanges && !isSaving) ? "pointer" : "default",
+                opacity: isSaving ? 0.7 : 1, transition: "all 0.2s"
               }}
               title={unsavedChanges ? "Salvar alterações" : "Nenhuma alteração pendente"}
             >
               <Save size={16} />
-              <span className="mobile-hide">{unsavedChanges ? "Salvar" : "Salvo"}</span>
+              <span className="mobile-hide">{isSaving ? "Salvando..." : unsavedChanges ? "Salvar" : "Salvo"}</span>
             </button>
           </div>
         </div>
