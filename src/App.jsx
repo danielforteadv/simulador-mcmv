@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, ReferenceLine, Cell
@@ -6,7 +6,7 @@ import {
 import {
   TrendingUp, TrendingDown, DollarSign, Building2, Calendar,
   AlertCircle, CheckCircle, BarChart3, Settings, Clock, Layers,
-  ChevronRight, Target, Activity
+  ChevronRight, Target, Activity, Save
 } from "lucide-react";
 
 const fmt = (v, type = "currency") => {
@@ -36,18 +36,38 @@ const CONSTRUCTION_ITEMS = [
 
 export default function App() {
   const [tab, setTab] = useState("dashboard");
-  const [params, setParams] = useState({
-    blocos: 1,
-    pavimentos: 4,
-    unidadesPav: 8,
-    areaPrivativa: 44.075,
-    valorUnidade: 159000,
-    custoM2: 1620,
-    terreno: 480000,
-    custosIndiretos: 17000,
-    prazo: 16,
-    tma: 15,
+  const [params, setParams] = useState(() => {
+    try {
+      const saved = localStorage.getItem("mcmv-params");
+      if (saved) return JSON.parse(saved);
+    } catch (e) { }
+    return {
+      blocos: 1,
+      pavimentos: 4,
+      unidadesPav: 8,
+      areaPrivativa: 44.075,
+      valorUnidade: 159000,
+      custoM2: 1620,
+      terreno: 480000,
+      custosIndiretos: 17000,
+      prazo: 16,
+      tma: 15,
+    };
   });
+
+  const [lastSavedParamsStr, setLastSavedParamsStr] = useState(() => JSON.stringify(params));
+  const unsavedChanges = JSON.stringify(params) !== lastSavedParamsStr;
+
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (unsavedChanges) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [unsavedChanges]);
 
   const calc = useMemo(() => {
     const totalUnidades = params.blocos * params.pavimentos * params.unidadesPav;
@@ -202,14 +222,34 @@ export default function App() {
               </div>
             </div>
           </div>
-          <div className="mobile-hide" style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{
-              fontSize: 11, fontWeight: 600, padding: "4px 10px", borderRadius: 20,
-              background: "#EFF6FF", color: "#1d4ed8", border: "1px solid #BFDBFE"
-            }}>
-              RESIDENCIAL MONTE CASTELO 2
-            </span>
-            <span style={{ fontSize: 11, color: "#6B7280" }}>João Pessoa · PB</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <div className="mobile-hide" style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{
+                fontSize: 11, fontWeight: 600, padding: "4px 10px", borderRadius: 20,
+                background: "#EFF6FF", color: "#1d4ed8", border: "1px solid #BFDBFE"
+              }}>
+                RESIDENCIAL MONTE CASTELO 2
+              </span>
+              <span style={{ fontSize: 11, color: "#6B7280" }}>João Pessoa · PB</span>
+            </div>
+            <button
+              onClick={() => {
+                localStorage.setItem("mcmv-params", JSON.stringify(params));
+                setLastSavedParamsStr(JSON.stringify(params));
+              }}
+              style={{
+                display: "flex", alignItems: "center", gap: 6,
+                background: unsavedChanges ? "#1d4ed8" : "#E5E7EB",
+                color: unsavedChanges ? "#fff" : "#6B7280",
+                padding: "8px 12px", borderRadius: 6,
+                border: "none", fontWeight: 600, fontSize: 13,
+                cursor: "pointer", transition: "all 0.2s"
+              }}
+              title={unsavedChanges ? "Salvar alterações" : "Nenhuma alteração pendente"}
+            >
+              <Save size={16} />
+              <span className="mobile-hide">{unsavedChanges ? "Salvar" : "Salvo"}</span>
+            </button>
           </div>
         </div>
       </header>
