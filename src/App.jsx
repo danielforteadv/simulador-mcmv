@@ -188,14 +188,14 @@ export default function App() {
         <div className="mobile-px-16 mobile-flex-wrap mobile-header-stack" style={{ padding: "0 24px", maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 64 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <div style={{
-              width: 36, height: 36, borderRadius: 10, background: "linear-gradient(135deg, #1d4ed8, #7c3aed)",
-              display: "flex", alignItems: "center", justifyContent: "center"
+              width: 36, height: 36, borderRadius: 10, background: "#fff",
+              display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", border: "1px solid #E5E7EB"
             }}>
-              <Building2 size={18} color="#fff" />
+              <img src="/wf-logo.jpg" alt="WF logo" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             </div>
             <div>
               <div style={{ fontSize: 15, fontWeight: 700, color: "#111827", letterSpacing: "-0.3px" }}>
-                Simulador MCMV
+                WF Construções
               </div>
               <div style={{ fontSize: 11, color: "#9CA3AF", marginTop: -1 }}>
                 Alvenaria Estrutural 4 Pavimentos
